@@ -46,18 +46,14 @@ class FreemiusInitializer {
 		}
 
 		self::$instances[ $product_id ] = fs_dynamic_init( array(
-			'id'                => $product_id,
-			'slug'              => $slug,
-			'type'              => 'plugin',
-			'public_key'        => $public_key,
-			'is_premium'        => false,
-			'has_addons'        => false,
-			'has_paid_plans'    => false,
-			'anonymous_mode'    => true,
-			'opt_in_moderation' => array(
-				'new' => 0,
-			),
-			'menu'              => array(
+			'id'             => $product_id,
+			'slug'           => $slug,
+			'type'           => 'plugin',
+			'public_key'     => $public_key,
+			'is_premium'     => false,
+			'has_addons'     => false,
+			'has_paid_plans' => false,
+			'menu'           => array(
 				'slug'    => $menu_slug,
 				'account' => false,
 				'contact' => false,
@@ -66,28 +62,9 @@ class FreemiusInitializer {
 				'pricing' => false,
 				'addons'  => false,
 			),
-			'navigation'        => 'menu',
-			'file'              => $consumer_main_file,
+			'navigation'     => 'menu',
+			'file'           => $consumer_main_file,
 		) );
-
-		// Suppress the deactivation "Quick Feedback" survey modal (Freemius SDK >= 2.3.0).
-		add_filter( 'fs_show_deactivation_feedback_form_' . $slug, '__return_false' );
-
-		// Freemius adds an "Opt In" link in the Plugins page when anonymous_mode is true.
-		// Remove it by checking the array key which contains "opt-in-or-opt-out".
-		$plugin_basename = plugin_basename( $consumer_main_file );
-		add_filter(
-			'plugin_action_links_' . $plugin_basename,
-			static function ( array $links ) {
-				foreach ( array_keys( $links ) as $key ) {
-					if ( is_string( $key ) && false !== strpos( $key, 'opt-in-or-opt-out' ) ) {
-						unset( $links[ $key ] );
-					}
-				}
-				return $links;
-			},
-			PHP_INT_MAX
-		);
 
 		return self::$instances[ $product_id ];
 	}
