@@ -64,16 +64,32 @@ Find the place in my plugin where admin hooks are registered
 (commonly a `define_admin_hooks()` method, a `plugins_loaded` callback,
 or an `admin_init` action).
 
-Add exactly these two lines there:
+Add exactly this block there:
 
     new \WPBoilerplate\AddonsPage\AddonsPage(
         'YOUR_PLUGIN_MENU_SLUG', // replace with the slug passed to add_menu_page()
-        __FILE__                 // the main plugin file — do NOT change this
+        __FILE__,                // the main plugin file — do NOT change this
+        [
+            'fs_product_id' => 'YOUR_FS_PRODUCT_ID', // numeric ID from Freemius dashboard
+            'fs_public_key' => 'YOUR_FS_PUBLIC_KEY', // pk_... from Freemius dashboard
+            'fs_slug'       => 'your-plugin-slug',   // optional — defaults to menu slug
+        ]
     );
 
-Replace `YOUR_PLUGIN_MENU_SLUG` with the actual first argument my plugin
-passed to `add_menu_page()`. You can find it by searching the codebase
-for `add_menu_page`.
+Replace:
+- `YOUR_PLUGIN_MENU_SLUG` — the actual first argument passed to `add_menu_page()`
+  (search the codebase for `add_menu_page` to find it)
+- `YOUR_FS_PRODUCT_ID` — numeric product ID from Freemius dashboard
+  (Dashboard → your product → Settings → General)
+- `YOUR_FS_PUBLIC_KEY` — public key (pk_...) from the same settings page
+
+Each plugin must have its own Freemius product so activations and analytics
+are tracked separately. Go to dashboard.freemius.com → Add New Product:
+  - What are you selling?  → WordPress Products
+  - Product type           → WordPress Plugin
+  - Integration purpose    → Get Analytics through Freemius
+  - Monetization           → Paid add-ons and/or add-on bundles
+  - Free plan              → ON
 
 The constructor registers the "Add-ons" submenu, enqueues assets,
 and wires all AJAX and Freemius hooks automatically. No other code is needed.

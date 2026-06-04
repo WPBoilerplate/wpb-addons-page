@@ -6,7 +6,15 @@ namespace WPBoilerplate\AddonsPage;
  * Public entrypoint for the Add-ons page package.
  *
  * Usage:
- *   new \WPBoilerplate\AddonsPage\AddonsPage( 'your-plugin-menu-slug', __FILE__ );
+ *   new \WPBoilerplate\AddonsPage\AddonsPage(
+ *       'your-plugin-menu-slug',
+ *       __FILE__,
+ *       [
+ *           'fs_product_id'  => '12345',
+ *           'fs_public_key'  => 'pk_your_public_key',
+ *           'fs_slug'        => 'your-plugin-slug', // optional, defaults to menu_slug
+ *       ]
+ *   );
  */
 class AddonsPage {
 
@@ -46,10 +54,13 @@ class AddonsPage {
 	/**
 	 * @param string      $menu_slug           Parent menu slug (the slug passed to add_menu_page()).
 	 * @param string|null $consumer_main_file  Absolute path to the consumer plugin's main file (__FILE__).
-	 *                                          Recommended — omit only when auto-detection is acceptable.
-	 * @param array       $args                Reserved for future options (text_domain, etc.).
+	 * @param array       $args                Required Freemius credentials + optional config:
+	 *                                           'fs_product_id'  (required) — Freemius product ID.
+	 *                                           'fs_public_key'  (required) — Freemius public key (pk_...).
+	 *                                           'fs_slug'        (optional) — Freemius product slug; defaults to $menu_slug.
 	 *
-	 * @throws \RuntimeException If WordPress version < 6.0, or if no valid plugin main file is found.
+	 * @throws \InvalidArgumentException If fs_product_id or fs_public_key are missing from $args.
+	 * @throws \RuntimeException         If WordPress version < 6.0, or no valid plugin main file is found.
 	 */
 	public function __construct( string $menu_slug, ?string $consumer_main_file = null, array $args = [] ) {
 		$this->assert_wp_version();
@@ -57,7 +68,18 @@ class AddonsPage {
 		$this->menu_slug          = sanitize_key( $menu_slug );
 		$this->consumer_main_file = $this->resolve_consumer_file( $consumer_main_file );
 
-		$fs_instance     = FreemiusInitializer::init( $this->consumer_main_file, $this->menu_slug );
+		$fs_product_id = isset( $args['fs_product_id'] ) ? (string) $args['fs_product_id'] : '';
+		$fs_public_key = isset( $args['fs_public_key'] ) ? (string) $args['fs_public_key'] : '';
+		$fs_slug       = isset( $args['fs_slug'] ) ? sanitize_key( $args['fs_slug'] ) : $this->menu_slug;
+
+		if ( '' === $fs_product_id || '' === $fs_public_key ) {
+			throw new \InvalidArgumentException(
+				'AddonsPage: fs_product_id and fs_public_key are required. ' .
+				"Pass them via \$args: new AddonsPage( \$slug, __FILE__, [ 'fs_product_id' => '...', 'fs_public_key' => 'pk_...' ] )"
+			);
+		}
+
+		$fs_instance     = FreemiusInitializer::init( $this->consumer_main_file, $this->menu_slug, $fs_product_id, $fs_public_key, $fs_slug );
 		$this->fs_bridge = new FreemiusBridge( $fs_instance );
 		$this->registry  = new AddonsRegistry();
 		$this->notices   = new Notices();

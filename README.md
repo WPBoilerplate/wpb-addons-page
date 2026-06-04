@@ -22,16 +22,25 @@ require_once plugin_dir_path( __FILE__ ) . 'vendor/autoload_packages.php';
 
 ## Integration
 
-Call the constructor anywhere after your plugin's admin menu is registered (e.g. inside a `plugins_loaded` callback or `define_admin_hooks()`):
+Register a free product in your [Freemius dashboard](https://dashboard.freemius.com) (WordPress Plugin, Analytics only, free plan ON) and grab its **Product ID** and **Public Key**.
+
+Then call the constructor anywhere after your plugin's admin menu is registered (e.g. inside a `plugins_loaded` callback or `define_admin_hooks()`):
 
 ```php
 new \WPBoilerplate\AddonsPage\AddonsPage(
-    'your-plugin-menu-slug', // parent menu slug your plugin registered with add_menu_page()
-    __FILE__                 // your plugin's main file — passed as-is to Freemius
+    'your-plugin-menu-slug', // parent menu slug registered with add_menu_page()
+    __FILE__,                // your plugin's main file
+    [
+        'fs_product_id' => '12345',       // your Freemius product ID
+        'fs_public_key' => 'pk_abc123',   // your Freemius public key
+        'fs_slug'       => 'your-plugin', // optional — defaults to menu slug
+    ]
 );
 ```
 
-That is the entire integration. The package handles:
+Each plugin gets its own Freemius product so activations and analytics are tracked separately per plugin in your dashboard.
+
+The package handles:
 
 - Registering the **Add-ons submenu** under your parent menu slug
 - Rendering the add-ons grid (free + paid)

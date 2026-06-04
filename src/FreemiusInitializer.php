@@ -3,33 +3,37 @@
 namespace WPBoilerplate\AddonsPage;
 
 /**
- * Loads the Freemius SDK and creates the single shared FS instance.
+ * Loads the Freemius SDK and creates a per-plugin FS instance.
  *
- * All consumer plugins that include this package share one Freemius product
- * ("WPB Add-ons Page"). This enables automatic shared opt-in across all
- * consumers on the same site — the first consumer to load creates the instance,
- * subsequent consumers receive the memoized instance back.
+ * Each consumer plugin passes its own Freemius product credentials so that
+ * activations, opt-ins, and analytics are tracked separately per plugin in
+ * the Freemius dashboard.
  */
 class FreemiusInitializer {
 
-	const FS_PRODUCT_ID  = '31225';
-	const FS_SLUG        = 'wpb-addons-page';
-	const FS_PUBLIC_KEY  = 'pk_2a57beb16d277532f564f3daaf7c6';
-
-	/** @var object|null Memoized Freemius instance. */
-	private static $instance = null;
+	/** @var object[] Memoized FS instances keyed by product ID. */
+	private static $instances = [];
 
 	/**
-	 * Load the SDK (if not already loaded) and return the shared FS instance.
+	 * Load the SDK (if not already loaded) and return the FS instance for the given product.
 	 *
 	 * @param string $consumer_main_file Absolute path to the consumer plugin's main file.
 	 * @param string $menu_slug          Consumer's parent admin menu slug.
+	 * @param string $product_id         Freemius product ID (numeric string).
+	 * @param string $public_key         Freemius product public key (pk_...).
+	 * @param string $slug               Freemius product slug.
 	 *
 	 * @return object Freemius instance.
 	 */
-	public static function init( string $consumer_main_file, string $menu_slug ): object {
-		if ( null !== self::$instance ) {
-			return self::$instance;
+	public static function init(
+		string $consumer_main_file,
+		string $menu_slug,
+		string $product_id,
+		string $public_key,
+		string $slug
+	): object {
+		if ( isset( self::$instances[ $product_id ] ) ) {
+			return self::$instances[ $product_id ];
 		}
 
 		self::load_sdk();
@@ -41,11 +45,11 @@ class FreemiusInitializer {
 			);
 		}
 
-		self::$instance = fs_dynamic_init( array(
-			'id'                => self::FS_PRODUCT_ID,
-			'slug'              => self::FS_SLUG,
+		self::$instances[ $product_id ] = fs_dynamic_init( array(
+			'id'                => $product_id,
+			'slug'              => $slug,
 			'type'              => 'plugin',
-			'public_key'        => self::FS_PUBLIC_KEY,
+			'public_key'        => $public_key,
 			'is_premium'        => false,
 			'has_addons'        => false,
 			'has_paid_plans'    => false,
@@ -67,12 +71,10 @@ class FreemiusInitializer {
 		) );
 
 		// Suppress the deactivation "Quick Feedback" survey modal (Freemius SDK >= 2.3.0).
-		// Filter pattern: fs_{tag}_{slug} — see fs_apply_filter() in fs-core-functions.php.
-		add_filter( 'fs_show_deactivation_feedback_form_' . self::FS_SLUG, '__return_false' );
+		add_filter( 'fs_show_deactivation_feedback_form_' . $slug, '__return_false' );
 
 		// Freemius adds an "Opt In" link in the Plugins page when anonymous_mode is true.
-		// Freemius uses "opt-in-or-opt-out {slug}" as the array KEY (not a CSS class in HTML).
-		// Remove it by checking the key, not the link HTML.
+		// Remove it by checking the array key which contains "opt-in-or-opt-out".
 		$plugin_basename = plugin_basename( $consumer_main_file );
 		add_filter(
 			'plugin_action_links_' . $plugin_basename,
@@ -87,7 +89,7 @@ class FreemiusInitializer {
 			PHP_INT_MAX
 		);
 
-		return self::$instance;
+		return self::$instances[ $product_id ];
 	}
 
 	/**
