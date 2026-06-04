@@ -44,9 +44,7 @@ class PageRenderer {
 	public function render(): void {
 		$addons       = AddonsRegistry::all();
 		$is_registered  = $this->fs_bridge->is_registered();
-		// Banner only makes sense when paid add-ons exist that require account verification.
-		$has_paid_addons = ! empty( AddonsRegistry::by_type( 'paid' ) );
-		$banner_visible  = ! $is_registered && $has_paid_addons;
+		$banner_visible = ! $is_registered;
 		$pending_slug  = $this->pending->get();
 
 		// Augment each addon with its button state.
