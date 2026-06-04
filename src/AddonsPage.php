@@ -96,7 +96,7 @@ class AddonsPage {
 
 	/** admin_post handler: sets pending add-on slug then fires connect_again(). */
 	public function handle_connect_again(): void {
-		check_admin_referer( 'wpb_addons_connect' );
+		check_admin_referer( 'wpb_addons_connect', 'nonce' );
 
 		if ( ! current_user_can( 'install_plugins' ) ) {
 			wp_die( esc_html__( 'You do not have permission to do this.', 'wpb-addons-page' ) );
