@@ -49,7 +49,7 @@ class FreemiusInitializer {
 			'is_premium'        => false,
 			'has_addons'        => false,
 			'has_paid_plans'    => false,
-			'anonymous_mode'    => false,
+			'anonymous_mode'    => true,
 			'opt_in_moderation' => array(
 				'new' => 0,
 			),
