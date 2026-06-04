@@ -69,42 +69,37 @@ class AddonsRegistry {
 	private static function definitions(): array {
 		return array(
 
-			// ---- Free add-on from WordPress.org ---------------------------------
+			// ---- AcrossAI Model Manager -----------------------------------------
 			array(
-				'slug'        => 'wpb-example-addon',
-				'name'        => 'WPB Example Free Add-on',
-				'description' => 'An example free add-on hosted on WordPress.org. Installs with one click.',
-				'icon'        => 'https://ps.w.org/wpb-example-addon/assets/icon-128x128.png',
-				'more_url'    => 'https://wordpress.org/plugins/wpb-example-addon/',
+				'slug'        => 'acrossai-model-manager',
+				'name'        => 'AcrossAI Model Manager',
+				'description' => 'Control which AI model is used per capability, set request time limits, and review a full audit log of every AI generation call on your site.',
+				'icon'        => 'https://ps.w.org/acrossai-model-manager/assets/icon-128x128.png',
+				'more_url'    => 'https://wordpress.org/plugins/acrossai-model-manager/',
 				'type'        => 'free',
 				'source'      => 'wordpress.org',
 			),
 
-			// ---- Free add-on from GitHub ----------------------------------------
+			// ---- Turn Off AI Features -------------------------------------------
 			array(
-				'slug'         => 'wpb-github-addon',
-				'name'         => 'WPB GitHub Add-on',
-				'description'  => 'An example free add-on hosted on GitHub. Installs directly from the release ZIP.',
-				'icon'         => 'https://raw.githubusercontent.com/example/wpb-github-addon/main/assets/icon-128x128.png',
-				'more_url'     => 'https://github.com/example/wpb-github-addon',
-				'type'         => 'free',
-				'source'       => 'github',
-				'download_url' => 'https://github.com/example/wpb-github-addon/releases/latest/download/wpb-github-addon.zip',
+				'slug'        => 'turn-off-ai-features',
+				'name'        => 'Turn Off AI Features',
+				'description' => 'Disable AI functionality in WordPress without touching code. Hooks into wp_supports_ai to return false when the option is enabled.',
+				'icon'        => 'https://ps.w.org/turn-off-ai-features/assets/icon-128x128.png',
+				'more_url'    => 'https://wordpress.org/plugins/turn-off-ai-features/',
+				'type'        => 'free',
+				'source'      => 'wordpress.org',
 			),
 
-			// ---- Paid add-on from Freemius ---------------------------------------
+			// ---- AcrossAI MCP Manager -------------------------------------------
 			array(
-				'slug'          => 'wpb-premium-addon',
-				'name'          => 'WPB Premium Add-on',
-				'description'   => 'An example premium add-on sold and delivered via Freemius. Unlock advanced features.',
-				'icon'          => 'https://example.com/wpb-premium-addon/icon-128x128.png',
-				'more_url'      => 'https://example.com/wpb-premium-addon/',
-				'type'          => 'paid',
-				'source'        => 'freemius',
-				'fs_product_id' => 'REPLACE_WITH_ADDON_FS_PRODUCT_ID',
-				'fs_plan_id'    => 'REPLACE_WITH_ADDON_FS_PLAN_ID',
-				'fs_public_key' => 'REPLACE_WITH_ADDON_FS_PUBLIC_KEY',
-				'price_label'   => '$49/year',
+				'slug'        => 'acrossai-mcp-manager',
+				'name'        => 'AcrossAI MCP Manager',
+				'description' => 'Seamless integration with Model Context Protocol (MCP) servers — lets AI assistants and code editors safely access your WordPress site via secure application passwords.',
+				'icon'        => 'https://ps.w.org/acrossai-mcp-manager/assets/icon-128x128.png',
+				'more_url'    => 'https://wordpress.org/plugins/acrossai-mcp-manager/',
+				'type'        => 'free',
+				'source'      => 'wordpress.org',
 			),
 
 		);
