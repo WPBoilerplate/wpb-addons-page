@@ -94,7 +94,7 @@ class AddonsPage {
 		$this->assets->set_hook_suffix( $this->hook_suffix );
 	}
 
-	/** admin_post handler: sets pending add-on slug then fires connect_again(). */
+	/** admin_post handler: resets Freemius anonymous mode and redirects to opt-in page. */
 	public function handle_connect_again(): void {
 		check_admin_referer( 'wpb_addons_connect', 'nonce' );
 
@@ -107,14 +107,15 @@ class AddonsPage {
 			$this->pending->set( $slug );
 		}
 
-		$return_url = add_query_arg(
+		// trigger_connect_again() calls fs->connect_again() which resets anonymous mode
+		// and internally calls fs_redirect() to the Freemius opt-in page — so it exits there.
+		$this->fs_bridge->trigger_connect_again();
+
+		// Fallback: if already connected or connect_again() unavailable, return to add-ons page.
+		wp_safe_redirect( add_query_arg(
 			[ 'page' => 'wpb-addons', 'wpb_addons_return' => '1' ],
 			admin_url( 'admin.php' )
-		);
-
-		$connect_url = $this->fs_bridge->connect_again_url( $return_url );
-
-		wp_safe_redirect( $connect_url );
+		) );
 		exit;
 	}
 

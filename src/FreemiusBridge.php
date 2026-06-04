@@ -34,22 +34,18 @@ class FreemiusBridge {
 	}
 
 	/**
-	 * Returns the URL that triggers the Freemius connect/opt-in flow.
-	 * After opt-in, Freemius redirects to $return_url.
+	 * Resets anonymous mode and redirects to the Freemius opt-in page.
+	 * Calls fs->connect_again() which handles the reset + redirect internally.
+	 * Falls back silently when the method is unavailable.
 	 */
-	public function connect_again_url( string $return_url ): string {
-		$nonce = wp_create_nonce( 'wpb_addons_connect' );
-		$slug  = isset( $_GET['slug'] ) ? sanitize_key( $_GET['slug'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification
-
-		return add_query_arg(
-			array_filter( [
-				'action'   => 'wpb_addons_connect_again',
-				'nonce'    => $nonce,
-				'slug'     => $slug ?: null,
-				'redirect' => urlencode( $return_url ),
-			] ),
-			admin_url( 'admin-post.php' )
-		);
+	public function trigger_connect_again(): void {
+		try {
+			if ( method_exists( $this->fs, 'connect_again' ) ) {
+				$this->fs->connect_again();
+			}
+		} catch ( \Exception $e ) {
+			// Fail gracefully — caller supplies the fallback redirect.
+		}
 	}
 
 	/**
