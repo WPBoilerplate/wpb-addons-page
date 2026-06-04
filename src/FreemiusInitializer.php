@@ -67,13 +67,14 @@ class FreemiusInitializer {
 		) );
 
 		// Freemius adds an "Opt In" link in the Plugins page when anonymous_mode is true.
-		// Remove it — the opt-in surface is not part of this plugin's UX.
+		// Freemius uses "opt-in-or-opt-out {slug}" as the array KEY (not a CSS class in HTML).
+		// Remove it by checking the key, not the link HTML.
 		$plugin_basename = plugin_basename( $consumer_main_file );
 		add_filter(
 			'plugin_action_links_' . $plugin_basename,
 			static function ( array $links ) {
-				foreach ( $links as $key => $link ) {
-					if ( is_string( $link ) && false !== strpos( $link, 'opt-in-or-opt-out' ) ) {
+				foreach ( array_keys( $links ) as $key ) {
+					if ( is_string( $key ) && false !== strpos( $key, 'opt-in-or-opt-out' ) ) {
 						unset( $links[ $key ] );
 					}
 				}
