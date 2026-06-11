@@ -1,12 +1,12 @@
 # Integration Prompt
 
-Copy and paste the block below into Claude (or any AI assistant) along with access to your plugin's files. It gives the AI everything it needs to wire `wpboilerplate/addons-page` into your plugin in one shot.
+Copy and paste the block below into Claude (or any AI assistant) along with access to your plugin's files. It gives the AI everything it needs to wire `acrossai-co/addons-page` into your plugin in one shot.
 
 ---
 
 ```
-I want to integrate the Composer package `wpboilerplate/addons-page` into my WordPress plugin.
-The package lives at https://github.com/WPBoilerplate/wpb-addons-page and adds a fully-working
+I want to integrate the Composer package `acrossai-co/addons-page` into my WordPress plugin.
+The package lives at https://github.com/acrossai-co/addons-page and adds a fully-working
 Add-ons page (free installs + Freemius paid checkout + opt-in flow) as a submenu under my
 plugin's admin menu.
 
@@ -19,9 +19,9 @@ STEP 1 — composer.json  (edit my plugin's composer.json)
 1a. Ensure `automattic/jetpack-autoloader` is `^5.0` (not ^3.0).
     If it is currently `^3.0`, bump it to `^5.0`.
 
-1b. Add `wpboilerplate/addons-page` to the `require` block:
+1b. Add `acrossai-co/addons-page` to the `require` block:
 
-    "wpboilerplate/addons-page": "^1.0"
+    "acrossai-co/addons-page": "^1.0"
 
     (If I am working from a local path clone instead of Packagist, add a
      path repository entry pointing at the local clone and use `"@dev"` as
@@ -38,7 +38,7 @@ STEP 1 — composer.json  (edit my plugin's composer.json)
 
 After editing, tell me to run:
 
-    composer update automattic/jetpack-autoloader wpboilerplate/addons-page
+    composer update automattic/jetpack-autoloader acrossai-co/addons-page
 
 ─────────────────────────────────────────────────────────────
 STEP 2 — Autoloader bootstrap  (main plugin file)
@@ -66,7 +66,7 @@ or an `admin_init` action).
 
 Add exactly this block there:
 
-    new \WPBoilerplate\AddonsPage\AddonsPage(
+    new \AcrossAI_Addon\AddonsPage(
         'YOUR_PLUGIN_MENU_SLUG', // replace with the slug passed to add_menu_page()
         __FILE__,                // the main plugin file — do NOT change this
         [
@@ -100,7 +100,7 @@ STEP 4 — readme.txt  (for wordpress.org submissions, optional)
 
 If my plugin has a `readme.txt` for wordpress.org, append the following
 sections (copy them verbatim from the package's
-`vendor/wpboilerplate/addons-page/docs/readme-template.txt`):
+`vendor/acrossai-co/addons-page/docs/readme-template.txt`):
 
 - == Installation ==
 - == External Services ==

@@ -1,6 +1,6 @@
 <?php
 
-namespace WPBoilerplate\AddonsPage;
+namespace AcrossAI_Addon;
 
 /**
  * Handles wp_ajax_* requests for free add-on install and activate.

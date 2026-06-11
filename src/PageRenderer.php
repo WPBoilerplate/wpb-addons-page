@@ -1,6 +1,6 @@
 <?php
 
-namespace WPBoilerplate\AddonsPage;
+namespace AcrossAI_Addon;
 
 /**
  * Renders the Add-ons page by loading scoped PHP view templates.

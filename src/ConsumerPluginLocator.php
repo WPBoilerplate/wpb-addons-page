@@ -1,6 +1,6 @@
 <?php
 
-namespace WPBoilerplate\AddonsPage;
+namespace AcrossAI_Addon;
 
 /**
  * Auto-detects the consumer plugin's main file by walking up from the package's
@@ -51,7 +51,7 @@ class ConsumerPluginLocator {
 		throw new \RuntimeException(
 			"AddonsPage: Could not locate the vendor/ directory above the package path. \n" .
 			"Pass __FILE__ of your plugin's main file as the second constructor argument:\n" .
-			'  new \\WPBoilerplate\\AddonsPage\\AddonsPage( $menu_slug, __FILE__ );'
+			'  new \\AcrossAI_Addon\\AddonsPage( $menu_slug, __FILE__ );'
 		);
 	}
 
@@ -91,7 +91,7 @@ class ConsumerPluginLocator {
 			"AddonsPage: No WordPress plugin main file found in: {$plugin_root}\n" .
 			"This package must be instantiated from within a WordPress plugin context.\n" .
 			"Pass __FILE__ of your plugin's main file as the second constructor argument:\n" .
-			'  new \\WPBoilerplate\\AddonsPage\\AddonsPage( $menu_slug, __FILE__ );'
+			'  new \\AcrossAI_Addon\\AddonsPage( $menu_slug, __FILE__ );'
 		);
 	}
 }

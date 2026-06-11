@@ -1,4 +1,4 @@
-# WPBoilerplate Add-ons Page
+# AcrossAI Add-ons Page
 
 A reusable Composer package that adds a fully working **Add-ons page** inside WP Admin for any WordPress plugin.
 
@@ -11,7 +11,7 @@ A reusable Composer package that adds a fully working **Add-ons page** inside WP
 ## Installation
 
 ```bash
-composer require wpboilerplate/addons-page
+composer require acrossai-co/addons-page
 ```
 
 Load the autoloader in your plugin (jetpack-autoloader generates `vendor/autoload_packages.php`):
@@ -27,7 +27,7 @@ Register a free product in your [Freemius dashboard](https://dashboard.freemius.
 Then call the constructor anywhere after your plugin's admin menu is registered (e.g. inside a `plugins_loaded` callback or `define_admin_hooks()`):
 
 ```php
-new \WPBoilerplate\AddonsPage\AddonsPage(
+new \AcrossAI_Addon\AddonsPage(
     'your-plugin-menu-slug', // parent menu slug registered with add_menu_page()
     __FILE__,                // your plugin's main file
     [

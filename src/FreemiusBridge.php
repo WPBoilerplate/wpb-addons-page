@@ -1,6 +1,6 @@
 <?php
 
-namespace WPBoilerplate\AddonsPage;
+namespace AcrossAI_Addon;
 
 /**
  * Defensive wrapper around the Freemius instance created by FreemiusInitializer.

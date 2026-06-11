@@ -1,5 +1,5 @@
 {
-    "name": "@wpboilerplate/addons-page",
+    "name": "@acrossai-co/addons-page",
     "version": "1.0.0",
     "description": "WordPress Add-ons page Composer package",
     "private": true,

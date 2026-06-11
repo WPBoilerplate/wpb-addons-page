@@ -1,6 +1,6 @@
 <?php
 
-namespace WPBoilerplate\AddonsPage;
+namespace AcrossAI_Addon;
 
 /**
  * Manages the 5-minute transient that remembers which paid add-on the user

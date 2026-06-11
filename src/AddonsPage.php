@@ -1,12 +1,12 @@
 <?php
 
-namespace WPBoilerplate\AddonsPage;
+namespace AcrossAI_Addon;
 
 /**
  * Public entrypoint for the Add-ons page package.
  *
  * Usage:
- *   new \WPBoilerplate\AddonsPage\AddonsPage(
+ *   new \AcrossAI_Addon\AddonsPage(
  *       'your-plugin-menu-slug',
  *       __FILE__,
  *       [
@@ -150,7 +150,7 @@ class AddonsPage {
 		global $wp_version;
 		if ( isset( $wp_version ) && version_compare( $wp_version, '6.0', '<' ) ) {
 			throw new \RuntimeException(
-				'WPBoilerplate AddonsPage requires WordPress 6.0 or higher. ' .
+				'AcrossAI Addon requires WordPress 6.0 or higher. ' .
 				"Current version: {$wp_version}"
 			);
 		}
@@ -179,6 +179,6 @@ class AddonsPage {
 			}
 		}
 		// Fallback: use plugins_url() with a file inside the package.
-		return trailingslashit( plugins_url( '', $this->consumer_main_file ) . '/vendor/wpboilerplate/addons-page' );
+		return trailingslashit( plugins_url( '', $this->consumer_main_file ) . '/vendor/acrossai-co/addons-page' );
 	}
 }

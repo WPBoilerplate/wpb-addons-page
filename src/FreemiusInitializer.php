@@ -1,6 +1,6 @@
 <?php
 
-namespace WPBoilerplate\AddonsPage;
+namespace AcrossAI_Addon;
 
 /**
  * Loads the Freemius SDK and creates a per-plugin FS instance.
@@ -80,8 +80,8 @@ class FreemiusInitializer {
 
 		// When installed via Composer the SDK lives at:
 		// {consumer}/vendor/freemius/wordpress-sdk/start.php
-		// This package lives at: {consumer}/vendor/wpboilerplate/addons-page/src/
-		// Walk up: src -> addons-page -> wpboilerplate -> vendor, then into freemius/wordpress-sdk.
+		// This package lives at: {consumer}/vendor/acrossai-co/addons-page/src/
+		// Walk up: src -> addons-page -> acrossai-co -> vendor, then into freemius/wordpress-sdk.
 		$sdk_path = dirname( __DIR__, 3 ) . '/freemius/wordpress-sdk/start.php';
 
 		if ( ! file_exists( $sdk_path ) ) {

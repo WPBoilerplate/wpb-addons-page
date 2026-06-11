@@ -4,7 +4,7 @@
  *
  * @var array        $addons
  * @var string|null  $pending_slug
- * @var \WPBoilerplate\AddonsPage\PageRenderer $renderer
+ * @var \AcrossAI_Addon\PageRenderer $renderer
  */
 defined( 'ABSPATH' ) || exit;
 

@@ -30,7 +30,7 @@ require_once plugin_dir_path( __FILE__ ) . 'vendor/autoload_packages.php';
 
 ### Why the bump?
 
-`wpboilerplate/addons-page` uses features in jetpack-autoloader v5 that
+`acrossai-co/addons-page` uses features in jetpack-autoloader v5 that
 are not available in v3. Because Composer requires all packages in the
 dependency tree to satisfy a single resolved version, your root
 `composer.json` must allow v5.
