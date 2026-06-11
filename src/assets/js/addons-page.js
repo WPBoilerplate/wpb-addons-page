@@ -11,13 +11,15 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	const page = document.querySelector( '.wpb-addons-page' );
 	if ( ! page ) return;
 
+	// Filters are purely DOM-driven and work regardless of config.
+	initFilters( page );
+
 	// Find the localised data object for this page instance.
 	const instanceKey = page.dataset.wpbAddonsInstance || '';
 	const globalName = 'wpbAddonsPage_' + instanceKey.replace( /[^a-zA-Z0-9_]/g, '_' );
 	const config = window[ globalName ];
 	if ( ! config ) return;
 
-	initFilters( page );
 	initInstall( page, config );
 	initCheckout( page, config );
 
