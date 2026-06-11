@@ -41,11 +41,26 @@ if ( $is_pending ) {
 
 		<p class="wpb-addons-page__card-desc"><?php echo esc_html( $addon['description'] ); ?></p>
 
-		<?php if ( 'paid' === $addon['type'] && ! empty( $addon['price_label'] ) ) : ?>
-			<span class="wpb-addons-page__price"><?php echo esc_html( $addon['price_label'] ); ?></span>
-		<?php else : ?>
-			<span class="wpb-addons-page__badge wpb-addons-page__badge--free"><?php esc_html_e( 'FREE', 'wpb-addons-page' ); ?></span>
-		<?php endif; ?>
+		<div class="wpb-addons-page__card-meta">
+			<?php if ( 'paid' === $addon['type'] && ! empty( $addon['price_label'] ) ) : ?>
+				<span class="wpb-addons-page__price"><?php echo esc_html( $addon['price_label'] ); ?></span>
+			<?php else : ?>
+				<span class="wpb-addons-page__badge wpb-addons-page__badge--free"><?php esc_html_e( 'FREE', 'wpb-addons-page' ); ?></span>
+			<?php endif; ?>
+
+			<?php
+			$source_labels = array(
+				'wordpress.org' => 'WordPress.org',
+				'github'        => 'GitHub',
+				'freemius'      => 'Freemius',
+			);
+			$source_label = $source_labels[ $addon['source'] ] ?? ucfirst( $addon['source'] );
+			$source_mod   = 'wpb-addons-page__source--' . str_replace( '.', '-', $addon['source'] );
+			?>
+			<span class="wpb-addons-page__source <?php echo esc_attr( $source_mod ); ?>">
+				<?php echo esc_html( $source_label ); ?>
+			</span>
+		</div>
 	</div>
 
 	<div class="wpb-addons-page__card-footer">

@@ -168,6 +168,49 @@ $highlight-border: #2271b1;
 	}
 }
 
+.wpb-addons-page__card-meta {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	flex-wrap: wrap;
+	margin-bottom: 12px;
+
+	.wpb-addons-page__badge,
+	.wpb-addons-page__price {
+		margin-bottom: 0;
+	}
+}
+
+.wpb-addons-page__source {
+	display: inline-flex;
+	align-items: center;
+	font-size: 11px;
+	font-weight: 500;
+	border-radius: 10px;
+	padding: 2px 8px;
+	border: 1px solid #dcdcde;
+	background: #f6f8fa;
+	color: #50575e;
+
+	&--wordpress-org {
+		color: #0073aa;
+		border-color: #b3d9f0;
+		background: #f0f8ff;
+	}
+
+	&--github {
+		color: #24292f;
+		border-color: #d0d7de;
+		background: #f6f8fa;
+	}
+
+	&--freemius {
+		color: #6a4c93;
+		border-color: #d4bbf0;
+		background: #f8f0ff;
+	}
+}
+
 // ---- Card footer + buttons ------------------------------------------
 
 .wpb-addons-page__card-footer {

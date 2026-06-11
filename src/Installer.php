@@ -39,7 +39,7 @@ class Installer {
 		if ( $skin->get_errors()->has_errors() ) {
 			return [
 				'success'     => false,
-				'message'     => implode( ' ', $skin->get_error_messages() ),
+				'message'     => implode( ' ', $skin->get_errors()->get_error_messages() ),
 				'plugin_file' => '',
 			];
 		}
@@ -121,10 +121,16 @@ class Installer {
 	 */
 	private function resolve_download_url( array $addon ) {
 		if ( 'wordpress.org' === $addon['source'] ) {
-			$info = plugins_api( 'plugin_information', [
-				'slug'   => $addon['slug'],
-				'fields' => [ 'sections' => false, 'reviews' => false ],
-			] );
+			$info = plugins_api(
+				'plugin_information',
+				[
+					'slug'   => $addon['slug'],
+					'fields' => [
+						'sections' => false,
+						'reviews'  => false,
+					],
+				]
+			);
 
 			if ( is_wp_error( $info ) ) {
 				return $info;

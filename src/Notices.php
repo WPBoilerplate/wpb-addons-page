@@ -12,9 +12,12 @@ class Notices {
 
 	/** @param string $type 'success' | 'error' | 'warning' */
 	public function queue( string $type, string $message ): void {
-		$key     = self::TRANSIENT_KEY . get_current_user_id();
-		$pending = get_transient( $key ) ?: [];
-		$pending[] = [ 'type' => $type, 'message' => $message ];
+		$key       = self::TRANSIENT_KEY . get_current_user_id();
+		$pending   = get_transient( $key ) ?: [];
+		$pending[] = [
+			'type'    => $type,
+			'message' => $message,
+		];
 		set_transient( $key, $pending, MINUTE_IN_SECONDS * 5 );
 	}
 

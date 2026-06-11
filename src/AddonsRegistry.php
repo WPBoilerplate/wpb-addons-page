@@ -49,16 +49,26 @@ class AddonsRegistry {
 
 	/** @return array[] */
 	public static function by_type( string $type ): array {
-		return array_values( array_filter( self::all(), function ( $a ) use ( $type ) {
-			return $a['type'] === $type;
-		} ) );
+		return array_values(
+			array_filter(
+				self::all(),
+				function ( $a ) use ( $type ) {
+					return $a['type'] === $type;
+				}
+			)
+		);
 	}
 
 	/** @return array[] */
 	public static function by_source( string $source ): array {
-		return array_values( array_filter( self::all(), function ( $a ) use ( $source ) {
-			return $a['source'] === $source;
-		} ) );
+		return array_values(
+			array_filter(
+				self::all(),
+				function ( $a ) use ( $source ) {
+					return $a['source'] === $source;
+				}
+			)
+		);
 	}
 
 	// -------------------------------------------------------------------------

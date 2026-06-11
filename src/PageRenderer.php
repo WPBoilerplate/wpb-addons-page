@@ -7,9 +7,6 @@ namespace AcrossAI_Addon;
  */
 class PageRenderer {
 
-	/** @var AddonsRegistry */
-	private $registry;
-
 	/** @var FreemiusBridge */
 	private $fs_bridge;
 
@@ -26,13 +23,11 @@ class PageRenderer {
 	private $views_path;
 
 	public function __construct(
-		AddonsRegistry $registry,
 		FreemiusBridge $fs_bridge,
 		ButtonState $button_state,
 		PendingAddon $pending,
 		string $menu_slug = ''
 	) {
-		$this->registry     = $registry;
 		$this->fs_bridge    = $fs_bridge;
 		$this->button_state = $button_state;
 		$this->pending      = $pending;
@@ -42,25 +37,31 @@ class PageRenderer {
 
 	/** Submenu page callback. */
 	public function render(): void {
-		$addons       = AddonsRegistry::all();
+		$addons         = AddonsRegistry::all();
 		$is_registered  = $this->fs_bridge->is_registered();
 		$banner_visible = ! $is_registered;
-		$pending_slug  = $this->pending->get();
+		$pending_slug   = $this->pending->get();
 
 		// Augment each addon with its button state.
-		$addons_with_state = array_map( function ( $addon ) {
-			$addon['button_state'] = $this->button_state->for_addon( $addon );
-			return $addon;
-		}, $addons );
+		$addons_with_state = array_map(
+			function ( $addon ) {
+				$addon['button_state'] = $this->button_state->for_addon( $addon );
+				return $addon;
+			},
+			$addons
+		);
 
-		$this->render_partial( 'page', [
-			'addons'         => $addons_with_state,
-			'is_registered'  => $is_registered,
-			'banner_visible' => $banner_visible,
-			'pending_slug'   => $pending_slug,
-			'renderer'       => $this,
-			'menu_slug'      => $this->menu_slug,
-		] );
+		$this->render_partial(
+			'page',
+			[
+				'addons'         => $addons_with_state,
+				'is_registered'  => $is_registered,
+				'banner_visible' => $banner_visible,
+				'pending_slug'   => $pending_slug,
+				'renderer'       => $this,
+				'menu_slug'      => $this->menu_slug,
+			]
+		);
 	}
 
 	/**

@@ -3,13 +3,14 @@ parameters:
     paths:
         - src/
     excludePaths:
-        - vendor/
-        - node_modules/
-        - build/
+        - vendor (?)
+        - node_modules (?)
+        - build (?)
     ignoreErrors:
-        - '#Call to an undefined method Freemius::#'
-        - '#Class Freemius not found#'
-        - '#Class FS_Plugin_License not found#'
-        - '#Class FS_Api not found#'
+        # WordPress constants defined at runtime, not resolvable from stubs.
+        - '#Constant ABSPATH not found\.#'
+        - '#Constant MINUTE_IN_SECONDS not found\.#'
+        # View templates inject $renderer via extract(); PHPStan can't see that.
+        - '#Variable \$renderer might not be defined\.#'
     bootstrapFiles:
         - vendor/php-stubs/wordpress-stubs/wordpress-stubs.php

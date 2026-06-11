@@ -45,26 +45,28 @@ class FreemiusInitializer {
 			);
 		}
 
-		self::$instances[ $product_id ] = fs_dynamic_init( array(
-			'id'             => $product_id,
-			'slug'           => $slug,
-			'type'           => 'plugin',
-			'public_key'     => $public_key,
-			'is_premium'     => false,
-			'has_addons'     => false,
-			'has_paid_plans' => false,
-			'menu'           => array(
-				'slug'    => $menu_slug,
-				'account' => false,
-				'contact' => false,
-				'support' => false,
-				'upgrade' => false,
-				'pricing' => false,
-				'addons'  => false,
-			),
-			'navigation'     => 'menu',
-			'file'           => $consumer_main_file,
-		) );
+		self::$instances[ $product_id ] = fs_dynamic_init(
+			array(
+				'id'             => $product_id,
+				'slug'           => $slug,
+				'type'           => 'plugin',
+				'public_key'     => $public_key,
+				'is_premium'     => false,
+				'has_addons'     => false,
+				'has_paid_plans' => false,
+				'menu'           => array(
+					'slug'    => $menu_slug,
+					'account' => false,
+					'contact' => false,
+					'support' => false,
+					'upgrade' => false,
+					'pricing' => false,
+					'addons'  => false,
+				),
+				'navigation'     => 'menu',
+				'file'           => $consumer_main_file,
+			)
+		);
 
 		return self::$instances[ $product_id ];
 	}

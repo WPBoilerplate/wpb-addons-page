@@ -27,9 +27,6 @@ class AddonsPage {
 	/** @var FreemiusBridge */
 	private $fs_bridge;
 
-	/** @var AddonsRegistry */
-	private $registry;
-
 	/** @var MenuRegistrar */
 	private $menu_registrar;
 
@@ -81,19 +78,18 @@ class AddonsPage {
 
 		$fs_instance     = FreemiusInitializer::init( $this->consumer_main_file, $this->menu_slug, $fs_product_id, $fs_public_key, $fs_slug );
 		$this->fs_bridge = new FreemiusBridge( $fs_instance );
-		$this->registry  = new AddonsRegistry();
 		$this->notices   = new Notices();
 		$this->pending   = new PendingAddon();
 
-		$button_state        = new ButtonState( $this->fs_bridge );
-		$this->renderer      = new PageRenderer( $this->registry, $this->fs_bridge, $button_state, $this->pending, $this->menu_slug );
+		$button_state         = new ButtonState( $this->fs_bridge );
+		$this->renderer       = new PageRenderer( $this->fs_bridge, $button_state, $this->pending, $this->menu_slug );
 		$this->menu_registrar = new MenuRegistrar( $this->menu_slug, $this->renderer );
 
-		$package_dir = dirname( __DIR__ );
-		$package_url = $this->detect_package_url( $package_dir );
-		$this->assets = new Assets( $package_url, $package_dir, $this->menu_slug, $this->registry, $this->fs_bridge, $button_state );
+		$package_dir  = dirname( __DIR__ );
+		$package_url  = $this->detect_package_url( $package_dir );
+		$this->assets = new Assets( $package_url, $package_dir, $this->menu_slug, $this->fs_bridge, $button_state );
 
-		$this->ajax = new AjaxHandlers( $this->registry, new Installer(), $this->fs_bridge, $button_state );
+		$this->ajax = new AjaxHandlers( new Installer(), $button_state );
 
 		$this->boot();
 	}
@@ -135,10 +131,15 @@ class AddonsPage {
 		$this->fs_bridge->trigger_connect_again();
 
 		// Fallback: if already connected or connect_again() unavailable, return to add-ons page.
-		wp_safe_redirect( add_query_arg(
-			[ 'page' => 'wpb-addons', 'wpb_addons_return' => '1' ],
-			admin_url( 'admin.php' )
-		) );
+		wp_safe_redirect(
+			add_query_arg(
+				[
+					'page'              => 'wpb-addons',
+					'wpb_addons_return' => '1',
+				],
+				admin_url( 'admin.php' )
+			)
+		);
 		exit;
 	}
 

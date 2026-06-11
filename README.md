@@ -4,7 +4,7 @@ A reusable Composer package that adds a fully working **Add-ons page** inside WP
 
 ## Requirements
 
-- PHP 7.4+
+- PHP 8.1+
 - WordPress 6.0+
 - `automattic/jetpack-autoloader: ^5.0` in your plugin's `composer.json`
 
