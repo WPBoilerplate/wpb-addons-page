@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<ruleset name="WPBoilerplate AddonsPage">
-    <description>Coding standards for wpboilerplate/addons-page</description>
+<ruleset name="AcrossAI Addon">
+    <description>Coding standards for acrossai-co/addons-page</description>
 
     <file>src/</file>
 

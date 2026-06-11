@@ -11,6 +11,7 @@
     },
     "require-dev": {
         "wp-coding-standards/wpcs": "*",
+        "phpcompatibility/phpcompatibility-wp": "*",
         "dealerdirect/phpcodesniffer-composer-installer": "^1.2",
         "szepeviktor/phpstan-wordpress": "^2.0",
         "phpunit/phpunit": "^9.6",
