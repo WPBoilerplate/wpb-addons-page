@@ -17,9 +17,6 @@ class Assets {
 	/** @var string */
 	private $menu_slug;
 
-	/** @var AddonsRegistry */
-	private $registry;
-
 	/** @var FreemiusBridge */
 	private $fs_bridge;
 
@@ -33,14 +30,12 @@ class Assets {
 		string $package_url,
 		string $package_dir,
 		string $menu_slug,
-		AddonsRegistry $registry,
 		FreemiusBridge $fs_bridge,
 		ButtonState $button_state
 	) {
 		$this->package_url  = $package_url;
 		$this->package_dir  = $package_dir;
 		$this->menu_slug    = $menu_slug;
-		$this->registry     = $registry;
 		$this->fs_bridge    = $fs_bridge;
 		$this->button_state = $button_state;
 	}
@@ -56,7 +51,10 @@ class Assets {
 		}
 
 		$asset_file = $this->package_dir . '/build/addons-page.asset.php';
-		$asset      = file_exists( $asset_file ) ? require $asset_file : [ 'dependencies' => [], 'version' => '1.0.0' ];
+		$asset      = file_exists( $asset_file ) ? require $asset_file : [
+			'dependencies' => [],
+			'version'      => '1.0.0',
+		];
 
 		// Unique handle per consumer menu slug to avoid wp_localize_script clobbering.
 		$handle = 'wpb-addons-page-' . $this->menu_slug;
@@ -102,14 +100,17 @@ class Assets {
 		$pending_slug  = $pending_addon->get();
 
 		$return_url = add_query_arg(
-			[ 'page' => 'wpb-addons', 'wpb_addons_return' => '1' ],
+			[
+				'page'              => 'wpb-addons',
+				'wpb_addons_return' => '1',
+			],
 			admin_url( 'admin.php' )
 		);
 
 		$addons = [];
 		foreach ( AddonsRegistry::all() as $addon ) {
-			$state   = $this->button_state->for_addon( $addon );
-			$entry   = array_merge( $addon, [ 'button_state' => $state ] );
+			$state = $this->button_state->for_addon( $addon );
+			$entry = array_merge( $addon, [ 'button_state' => $state ] );
 
 			if ( 'freemius' === $addon['source'] && $this->fs_bridge->is_registered() ) {
 				$entry['checkout_config'] = $this->fs_bridge->checkout_config( $addon );
@@ -119,10 +120,10 @@ class Assets {
 		}
 
 		return [
-			'ajaxUrl'    => admin_url( 'admin-ajax.php' ),
-			'nonce'      => wp_create_nonce( 'wpb_addons_action' ),
-			'textDomain' => 'wpb-addons-page',
-			'i18n'       => [
+			'ajaxUrl'     => admin_url( 'admin-ajax.php' ),
+			'nonce'       => wp_create_nonce( 'wpb_addons_action' ),
+			'textDomain'  => 'wpb-addons-page',
+			'i18n'        => [
 				'installing'    => __( 'Installing…', 'wpb-addons-page' ),
 				'activating'    => __( 'Activating…', 'wpb-addons-page' ),
 				'deactivating'  => __( 'Deactivating…', 'wpb-addons-page' ),
@@ -133,15 +134,18 @@ class Assets {
 				'active'        => __( '● Active', 'wpb-addons-page' ),
 				'retry'         => __( 'Retry', 'wpb-addons-page' ),
 			],
-			'freemius'   => [
+			'freemius'    => [
 				'isRegistered'    => $this->fs_bridge->is_registered(),
 				'connectAgainUrl' => add_query_arg(
-					[ 'action' => 'wpb_addons_connect_again', 'nonce' => wp_create_nonce( 'wpb_addons_connect' ) ],
+					[
+						'action' => 'wpb_addons_connect_again',
+						'nonce'  => wp_create_nonce( 'wpb_addons_connect' ),
+					],
 					admin_url( 'admin-post.php' )
 				),
 				'checkoutLoaded'  => $checkout_loaded,
 			],
-			'addons'     => $addons,
+			'addons'      => $addons,
 			'pendingSlug' => $pending_slug,
 			'returnFlag'  => ! empty( $_GET['wpb_addons_return'] ), // phpcs:ignore WordPress.Security.NonceVerification
 		];

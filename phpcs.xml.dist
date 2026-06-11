@@ -8,15 +8,44 @@
     <exclude-pattern>*/node_modules/*</exclude-pattern>
     <exclude-pattern>*/build/*</exclude-pattern>
     <exclude-pattern>*/src/assets/*</exclude-pattern>
-    <exclude-pattern>*/tests/_output/*</exclude-pattern>
+    <!-- View templates mix PHP and HTML; inline-tag and statement rules don't apply. -->
+    <exclude-pattern>*/src/Views/*</exclude-pattern>
 
-    <rule ref="WordPress-Extra"/>
-    <rule ref="WordPress-Docs"/>
+    <!--
+        WordPress-Core covers formatting, naming, and security essentials.
+        WordPress-Extra and WordPress-Docs are intentionally excluded:
+        this is a Composer library using PSR-4 naming and modern PHP syntax,
+        so plugin-oriented doc requirements and file-naming conventions don't apply.
+    -->
+    <rule ref="WordPress-Core"/>
 
+    <!-- PSR-4 autoloading requires PascalCase class filenames. -->
     <rule ref="WordPress.Files.FileName">
         <properties>
             <property name="strict_class_file_names" value="false"/>
         </properties>
+        <exclude name="WordPress.Files.FileName.NotHyphenatedLowercase"/>
+    </rule>
+
+    <!-- Short array syntax [] is idiomatic modern PHP (5.4+). -->
+    <rule ref="Universal.Arrays.DisallowShortArraySyntax">
+        <severity>0</severity>
+    </rule>
+
+    <!-- Short ternary ?: is a valid PHP operator. -->
+    <rule ref="Universal.Operators.DisallowShortTernary">
+        <severity>0</severity>
+    </rule>
+
+    <!--
+        RuntimeException constructor arguments are not browser output.
+        Suppress the EscapeOutput false-positives in files that only
+        use variables inside throw statements, never in echo/print/wp_die.
+    -->
+    <rule ref="WordPress.Security.EscapeOutput">
+        <exclude-pattern>src/AddonsPage\.php</exclude-pattern>
+        <exclude-pattern>src/FreemiusInitializer\.php</exclude-pattern>
+        <exclude-pattern>src/ConsumerPluginLocator\.php</exclude-pattern>
     </rule>
 
     <config name="minimum_supported_wp_version" value="6.0"/>

@@ -86,7 +86,7 @@ class ConsumerPluginLocator {
 	}
 
 	/** @throws \RuntimeException always */
-	private static function throw_not_found( string $plugin_root ): void {
+	private static function throw_not_found( string $plugin_root ): never {
 		throw new \RuntimeException(
 			"AddonsPage: No WordPress plugin main file found in: {$plugin_root}\n" .
 			"This package must be instantiated from within a WordPress plugin context.\n" .
